@@ -5,7 +5,7 @@ Turn your favourite classifier into an ordinal classifier.
 
 Ordinal classification packages where every sklearn classifier is supported.
 
-Listen here you dum dum: you need to have more than 2 labels for your features obviously!
+You need to have more than 2 labels for your features obviously!
 
 The classification is based upon this paper over here:
 
