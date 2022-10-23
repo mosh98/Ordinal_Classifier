@@ -13,10 +13,10 @@ The classification is based upon this paper over here:
 
 
 ```python
-pip install ordinal-classification
+!git clone https://github.com/mosh98/Ordinal_Classifier.git
 ```
 
-wait! i havent deployed to pypi yet, gimme a few days.
+wait! i havent deployed to pypi yet, will do it when i feel like it.
 
 
 ### How do i use it?
@@ -24,13 +24,12 @@ wait! i havent deployed to pypi yet, gimme a few days.
 1. import your favourite classifier from sklearn
 2. Insert that clf into the OrdinalClassifier
 3. Call fit and predict on your data
-4. Profit!
-5. Profit!
-6. repeat step 4 and 5 for even more profit!
+
+Here is an example: [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1CkoeHze9ee2WFe7P0sgqZS4Wyx9_rD8b?usp=sharing)
 
 ```python
-from oridnal_classifier import Ordinal_Classifier as OC
-from sklearn import Decision Tree Classifier
+from Ordinal_Classifier import Ordinal_Classifier as OC
+from sklearn.tree import DecisionTreeClassifier
 
 clf = OC.OrdinalClassifier(DecisionTreeClassifier())
 
@@ -41,5 +40,9 @@ predictions = clf.predict(X_test)
 # TADA! You just became a regression master! 
 # By exploting an unemployed engineer. Remember that when you sleep 
 ```
+
+#### Please pull an issue if you find any bugs
+
+### Enjoy!!
 
 
