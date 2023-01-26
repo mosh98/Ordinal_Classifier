@@ -34,8 +34,8 @@ class OrdinalClassifier(BaseEstimator, ClassifierMixin):
         clfs_predict = {k:self.clfs[k].predict_proba(X) for k in self.clfs}
 
         predicted = []
-        print(self.unique_class)
-        for i,y in enumerate(self.unique_class):
+
+        for i,y in enumerate(self.uniques_class):
             if i == 0:
                 # V1 = 1 - Pr(y > V1)
                 predicted.append(1 - clfs_predict[y][:, 1])
