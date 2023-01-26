@@ -21,6 +21,7 @@ class OrdinalClassifier(BaseEstimator, ClassifierMixin):
             if self.uniques_class.shape[0] > 2:
                 for i in range(self.uniques_class.shape[0]-1):
                     #binary_y = (y > self.uniques_class[1]).astype(np.uint8)
+
                     binary_y = (y > self.uniques_class[i]).astype(np.uint8)
                     clf = clone(self.clf)
                     clf.fit(X,binary_y)
