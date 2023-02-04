@@ -16,10 +16,9 @@ class OrdinalClassifier(BaseEstimator, ClassifierMixin):
         self.clfs = {}
         self.uniques_class = None
 
-
     def fit(self,X,y):
         self.uniques_class = np.sort(np.unique(y))
-        assert self.uniques_class.shape[0] < 3, f'OrdinalClassifier needs at least 3 classes, only {self.uniques_class.shape[0]} found'
+        assert self.uniques_class.shape[0] >= 3, f'OrdinalClassifier needs at least 3 classes, only {self.uniques_class.shape[0]} found'
 
         for i in range(self.uniques_class.shape[0]-1):
             binary_y = (y > self.uniques_class[i]).astype(np.uint8)
