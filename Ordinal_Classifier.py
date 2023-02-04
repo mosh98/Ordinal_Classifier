@@ -31,19 +31,14 @@ class OrdinalClassifier(BaseEstimator, ClassifierMixin):
         return np.argmax( self.predict_proba(X), axis=1 )
 
     def predict_proba(self,X):
-        clfs_predict = {k:self.clfs[k].predict_proba(X) for k in self.clfs}
+        predicted = np.vstack([self.clfs[k].predict_proba(X)[:,1] for k in self.clfs]).T
 
-        predicted = []
+        p_x_first = 1-predicted[:, :1]
+        p_x_last  = predicted[:, -1:]
+        p_x_middle= predicted[:, 0:-1] - predicted[:, 1:]
 
-        for i,y in enumerate(self.uniques_class):
-            if i == 0:
-                # V1 = 1 - Pr(y > V1)
-                predicted.append(1 - clfs_predict[y][:, 1])
-            elif y in clfs_predict:
-                #Vi = Pr(y>Vi-1)- Pr(y > Vi)
-                predicted.append(clfs_predict[y-1][:,1] - clfs_predict[y][:,1])
-            else:
-                predicted.append(clfs_predict[y-1][:,1])
+        probs = np.hstack([p_x_first, p_x_middle, p_x_last])
+        return probs
 
         return np.vstack(predicted).T
 
