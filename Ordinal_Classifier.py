@@ -14,18 +14,19 @@ class OrdinalClassifier(BaseEstimator, ClassifierMixin):
     def __init__(self,clf):
         self.clf = clf
         self.clfs = {}
+        self.uniques_class = None
 
 
     def fit(self,X,y):
-            self.uniques_class = np.sort(np.unique(y))
-            if self.uniques_class.shape[0] > 2:
-                for i in range(self.uniques_class.shape[0]-1):
-                    #binary_y = (y > self.uniques_class[1]).astype(np.uint8)
+        self.uniques_class = np.sort(np.unique(y))
+        assert self.uniques_class.shape[0] < 3, f'OrdinalClassifier needs at least 3 classes, only {self.uniques_class.shape[0]} found'
 
-                    binary_y = (y > self.uniques_class[i]).astype(np.uint8)
-                    clf = clone(self.clf)
-                    clf.fit(X,binary_y)
-                    self.clfs[i] = clf
+        for i in range(self.uniques_class.shape[0]-1):
+            binary_y = (y > self.uniques_class[i]).astype(np.uint8)
+            
+            clf = clone(self.clf)
+            clf.fit(X,binary_y)
+            self.clfs[i] = clf
 
     def predict(self,X):
         return np.argmax( self.predict_proba(X), axis=1 )
