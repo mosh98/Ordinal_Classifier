@@ -41,6 +41,8 @@ class OrdinalClassifier(BaseEstimator, ClassifierMixin):
         probs = np.hstack([p_x_first, p_x_middle, p_x_last])
         return probs
 
-        return np.vstack(predicted).T
+    def set_params(**params):
+        for _,clf in self.clfs:
+            clf.set_params(**params)
 
 
