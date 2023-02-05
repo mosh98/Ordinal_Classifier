@@ -42,6 +42,7 @@ class OrdinalClassifier(BaseEstimator, ClassifierMixin):
         return probs
 
     def set_params(self, **params):
+        self.clf.set_params(**params)
         for _,clf in self.clfs.items():
             clf.set_params(**params)
 
