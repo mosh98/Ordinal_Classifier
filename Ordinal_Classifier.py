@@ -14,37 +14,36 @@ class OrdinalClassifier(BaseEstimator, ClassifierMixin):
     def __init__(self,clf):
         self.clf = clf
         self.clfs = {}
-
+        self.uniques_class = None
 
     def fit(self,X,y):
-            self.uniques_class = np.sort(np.unique(y))
-            if self.uniques_class.shape[0] > 2:
-                for i in range(self.uniques_class.shape[0]-1):
-                    #binary_y = (y > self.uniques_class[1]).astype(np.uint8)
+        self.uniques_class = np.sort(np.unique(y))
+        assert self.uniques_class.shape[0] >= 3, f'OrdinalClassifier needs at least 3 classes, only {self.uniques_class.shape[0]} found'
 
-                    binary_y = (y > self.uniques_class[i]).astype(np.uint8)
-                    clf = clone(self.clf)
-                    clf.fit(X,binary_y)
-                    self.clfs[i] = clf
+        for i in range(self.uniques_class.shape[0]-1):
+            binary_y = (y > self.uniques_class[i]).astype(np.uint8)
+            
+            clf = clone(self.clf)
+            clf.fit(X,binary_y)
+            self.clfs[i] = clf
 
     def predict(self,X):
         return np.argmax( self.predict_proba(X), axis=1 )
 
     def predict_proba(self,X):
-        clfs_predict = {k:self.clfs[k].predict_proba(X) for k in self.clfs}
+        predicted = [self.clfs[k].predict_proba(X)[:,1].reshape(-1,1) for k in self.clfs]
 
-        predicted = []
+        p_x_first = 1-predicted[0]
+        p_x_last  = predicted[-1]
+        p_x_middle= [predicted[i] - predicted[i+1] for i in range(len(predicted) - 1)]
+        
+        probs = np.hstack([p_x_first, *p_x_middle, p_x_last])
 
-        for i,y in enumerate(self.uniques_class):
-            if i == 0:
-                # V1 = 1 - Pr(y > V1)
-                predicted.append(1 - clfs_predict[y][:, 1])
-            elif y in clfs_predict:
-                #Vi = Pr(y>Vi-1)- Pr(y > Vi)
-                predicted.append(clfs_predict[y-1][:,1] - clfs_predict[y][:,1])
-            else:
-                predicted.append(clfs_predict[y-1][:,1])
+        return probs
 
-        return np.vstack(predicted).T
+    def set_params(self, **params):
+        self.clf.set_params(**params)
+        for _,clf in self.clfs.items():
+            clf.set_params(**params)
 
 
