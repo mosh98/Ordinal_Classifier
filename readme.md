@@ -38,7 +38,7 @@ clf.fit(X_train, y_train)
 predictions = clf.predict(X_test)
 
 # TADA! You just became a regression master! 
-# By exploting an unemployed engineer. Remember that when you sleep 
+
 ```
 
 #### Please pull an issue if you find any bugs
