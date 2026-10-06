@@ -16,7 +16,7 @@ The classification is based upon this paper over here:
 !git clone https://github.com/mosh98/Ordinal_Classifier.git
 ```
 
-wait! i havent deployed to pypi yet, will do it when i feel like it.
+Not yet on PyPI — install by cloning the repo
 
 
 ### How do i use it?
